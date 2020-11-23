@@ -20,6 +20,7 @@
   "dependencies": {
     "eliq-promise": "^3.1.1",
     "express": "^4.17.1",
-    "socket.io": "^3.0.3"
+    "socket.io": "^3.0.3",
+    "watchjs": "0.0.0"
   }
 }

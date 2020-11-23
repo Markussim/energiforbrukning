@@ -8,8 +8,19 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-        
+      const socket = io();
+
+      socket.on("connect", () => {
+        $(function () {
+          socket.on("power", function (msg) {
+            console.log("Msg " + msg);
+            $("#power").text(msg + " watt");
+          });
+        });
+      });
     </script>
   </head>
-  <body></body>
+  <body>
+    <p id="power"></p>
+  </body>
 </html>

@@ -12,19 +12,17 @@ const config = {
 const { EliqClient } = require("eliq-promise");
 const eliq = new EliqClient(config);
 
-io.on("connection", (socket) => {
+Addlet oldJson = null;
+
+io.on("connection", async (socket) => {
   console.log("Got connect!");
 
-  let interval = setInterval(() => {
-    socket.emit("power", 400);
-  }, 1000);
+  let tmpJson = await eliq.getNow();
 
-  socket.on("msg", function (data) {
-    console.log(data);
-  });
+  socket.emit("power", tmpJson.power);
+  socket.emit("Hmm", "hmm");
 
   socket.on("disconnect", function () {
-    clearInterval(interval);
     console.log("Got disconnect!");
   });
 });
@@ -36,13 +34,29 @@ app.get("/", async (req, res) => {
 });
 
 async function runOnStart() {
-  json = await eliq.getNow();
+  try {
+    json = await eliq.getNow();
+  } catch (error) {
+    json = null;
+  }
 }
 
-//runOnStart();
+runOnStart();
 
-function getpower() {
-  return json.power;
-}
+setInterval(function () {
+  runOnStart();
+  if (!oldJson || oldJson.power != json.power) {
+    console.log("Not same");
+    console.log(oldJson);
+    console.log(json);
+    io.sockets.emit("power", json.power);
+  } else {
+    console.log("Same");
+    console.log(oldJson);
+    console.log(json);
+  }
 
-app.listen(port, () => console.log(`Example app listening on port port!`));
+  oldJson = json;
+}, 10000);
+
+server.listen(port, () => console.log(`Example app listening on port port!`));
