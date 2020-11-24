@@ -2,7 +2,7 @@ const key = require("./key.json")
 const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-const port = 3069;
+const port = 3068;
 
 const config = {
   eliqAccesstoken: key.key,
