@@ -1,10 +1,11 @@
+const key = require("./key.json")
 const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const port = 3000;
 
 const config = {
-  eliqAccesstoken: "a612b8362dac11eb95f696b78e6a6b19",
+  eliqAccesstoken: key.key,
   url: process.env["url"],
   format: process.env["format"],
   logLevel: process.env["logLevel"],
@@ -12,7 +13,7 @@ const config = {
 const { EliqClient } = require("eliq-promise");
 const eliq = new EliqClient(config);
 
-Addlet oldJson = null;
+let oldJson = null;
 
 io.on("connection", async (socket) => {
   console.log("Got connect!");

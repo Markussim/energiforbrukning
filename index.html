@@ -8,6 +8,14 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      setTimeout(function () {
+        if(document.getElementById("power").innerHTML == "") {
+          document.getElementById("power").innerText = "Misslykades att koppla till servern"
+        } else {
+          
+        }
+      }, 3000);
+
       const socket = io();
 
       socket.on("connect", () => {
